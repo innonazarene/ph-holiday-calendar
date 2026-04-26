@@ -1,10 +1,10 @@
 <?php
 
-namespace CalendarActivities\Scrapers;
+namespace PhHolidayCalendar\Scrapers;
 
 use Illuminate\Support\Collection;
-use CalendarActivities\Contracts\HolidayProvider;
-use CalendarActivities\Data\Holiday;
+use PhHolidayCalendar\Contracts\HolidayProvider;
+use PhHolidayCalendar\Data\Holiday;
 
 /**
  * Hardcoded fallback — Proclamation No. 1006, s. 2025 (for 2026).

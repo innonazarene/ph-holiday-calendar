@@ -1,17 +1,17 @@
 <?php
 
-namespace CalendarActivities;
+namespace PhHolidayCalendar;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use CalendarActivities\Contracts\HolidayProvider;
-use CalendarActivities\Data\Holiday;
+use PhHolidayCalendar\Contracts\HolidayProvider;
+use PhHolidayCalendar\Data\Holiday;
 
-use CalendarActivities\Scrapers\FallbackHolidayProvider;
-use CalendarActivities\Scrapers\OfficialGazetteScraper;
+use PhHolidayCalendar\Scrapers\FallbackHolidayProvider;
+use PhHolidayCalendar\Scrapers\OfficialGazetteScraper;
 
 /**
- * CalendarActivities — main service.
+ * PhHolidayCalendar — main service.
  *
  * Combines:
  *   1. ph_holidays     → scraped from Official Gazette, with fallback
@@ -27,7 +27,7 @@ use CalendarActivities\Scrapers\OfficialGazetteScraper;
  *     "activities_list": []   ← empty until your table has rows
  *   }
  */
-class CalendarActivities
+class PhHolidayCalendar
 {
     private HolidayProvider $holidays;
     private array           $config;
@@ -36,7 +36,7 @@ class CalendarActivities
         ?HolidayProvider $holidays = null,
         array            $config   = [],
     ) {
-        $this->config   = array_merge(config('calendar-activities', []), $config);
+        $this->config   = array_merge(config('ph-holiday-calendar', []), $config);
         $this->holidays = $holidays ?? $this->makeHolidayProvider();
     }
 
@@ -136,7 +136,7 @@ class CalendarActivities
 
             return $result;
         } catch (\Throwable $e) {
-            logger()->warning('[CalendarActivities] Official Gazette scrape failed, using fallback.', [
+            logger()->warning('[PhHolidayCalendar] Official Gazette scrape failed, using fallback.', [
                 'year'  => $year,
                 'error' => $e->getMessage(),
             ]);

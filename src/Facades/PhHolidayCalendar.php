@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendarActivities\Facades;
+namespace PhHolidayCalendar\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Facade;
  * @method static array forMonth(int $year = 0, int $month = 0, array $activitiesList = [])
  * @method static array forYear(int $year = 0, array $activitiesList = [])
  * @method static bool isHoliday(string|\DateTimeInterface $date)
- * @method static \CalendarActivities\Data\Holiday|null holidayOn(string|\DateTimeInterface $date)
+ * @method static \PhHolidayCalendar\Data\Holiday|null holidayOn(string|\DateTimeInterface $date)
  * @method static void clearHolidayCache(int $year = 0)
  *
- * @see \CalendarActivities\CalendarActivities
+ * @see \PhHolidayCalendar\PhHolidayCalendar
  */
-class CalendarActivities extends Facade
+class PhHolidayCalendar extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'calendar-activities';
+        return 'ph-holiday-calendar';
     }
 }

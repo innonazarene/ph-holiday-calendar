@@ -1,6 +1,6 @@
 <?php
 
-namespace CalendarActivities\Data;
+namespace PhHolidayCalendar\Data;
 
 /**
  * Holiday DTO — matches the TypeScript Holiday interface exactly.

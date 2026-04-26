@@ -1,12 +1,12 @@
 <?php
 
-namespace CalendarActivities\Scrapers;
+namespace PhHolidayCalendar\Scrapers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
-use CalendarActivities\Contracts\HolidayProvider;
-use CalendarActivities\Data\Holiday;
+use PhHolidayCalendar\Contracts\HolidayProvider;
+use PhHolidayCalendar\Data\Holiday;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -25,7 +25,7 @@ class OfficialGazetteScraper implements HolidayProvider
             'timeout'         => 15,
             'connect_timeout' => 10,
             'headers'         => [
-                'User-Agent'      => 'Mozilla/5.0 (compatible; CalendarActivitiesBot/1.0)',
+                'User-Agent'      => 'Mozilla/5.0 (compatible; PhHolidayCalendarBot/1.0)',
                 'Accept'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Language' => 'en-US,en;q=0.5',
                 'Accept-Encoding' => 'gzip, deflate',

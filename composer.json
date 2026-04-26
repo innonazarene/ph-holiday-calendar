@@ -1,9 +1,9 @@
 {
-    "name": "innonazarene/calendar-activities",
-    "description": "Laravel package that returns Philippine public holidays (Official Gazette) and HR activities from your database — ready for your CalendarProvider.",
+    "name": "innonazarene/ph-holiday-calendar",
+    "description": "Laravel package that returns Philippine public holidays (from the Official Gazette) for your calendar.",
     "type": "library",
     "license": "MIT",
-    "keywords": ["philippines", "holidays", "activities", "calendar", "official-gazette", "laravel", "hr"],
+    "keywords": ["philippines", "holidays", "calendar", "official-gazette", "laravel"],
     "authors": [
         {
             "name": "Tom Ramos Pedales",
@@ -26,21 +26,21 @@
     },
     "autoload": {
         "psr-4": {
-            "CalendarActivities\\": "src/"
+            "PhHolidayCalendar\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CalendarActivities\\Tests\\": "tests/"
+            "PhHolidayCalendar\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "CalendarActivities\\CalendarActivitiesServiceProvider"
+                "PhHolidayCalendar\\PhHolidayCalendarServiceProvider"
             ],
             "aliases": {
-                "CalendarActivities": "CalendarActivities\\Facades\\CalendarActivities"
+                "PhHolidayCalendar": "PhHolidayCalendar\\Facades\\PhHolidayCalendar"
             }
         }
     },

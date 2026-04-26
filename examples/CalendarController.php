@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use CalendarActivities\Facades\CalendarActivities;
+use PhHolidayCalendar\Facades\PhHolidayCalendar;
 
 /**
  * CalendarController
@@ -40,7 +40,7 @@ class CalendarController
         $month = (int) $request->query('month', now()->month);
 
         return response()->json(
-            CalendarActivities::forMonth($year, $month)
+            PhHolidayCalendar::forMonth($year, $month)
         );
     }
 
@@ -54,7 +54,7 @@ class CalendarController
         $year = (int) $request->query('year', now()->year);
 
         return response()->json(
-            CalendarActivities::holidays($year)
+            PhHolidayCalendar::holidays($year)
                 ->map(fn ($h) => $h->toArray())
                 ->values()
         );
@@ -71,7 +71,7 @@ class CalendarController
         $month = (int) $request->query('month', 0);
 
         return response()->json(
-            CalendarActivities::activities($year, $month)
+            PhHolidayCalendar::activities($year, $month)
                 ->map(fn ($a) => $a->toArray())
                 ->values()
         );
@@ -88,7 +88,7 @@ class CalendarController
         $request->validate(['date' => 'required|date_format:Y-m-d']);
 
         $date    = $request->query('date');
-        $holiday = CalendarActivities::holidayOn($date);
+        $holiday = PhHolidayCalendar::holidayOn($date);
 
         return response()->json([
             'isHoliday' => $holiday !== null,

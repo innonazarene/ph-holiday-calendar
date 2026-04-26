@@ -1,25 +1,25 @@
 <?php
 
-namespace CalendarActivities\Tests;
+namespace PhHolidayCalendar\Tests;
 
-use CalendarActivities\CalendarActivities;
-use CalendarActivities\CalendarActivitiesServiceProvider;
-use CalendarActivities\Data\Activity;
-use CalendarActivities\Data\Holiday;
-use CalendarActivities\Scrapers\FallbackHolidayProvider;
+use PhHolidayCalendar\PhHolidayCalendar;
+use PhHolidayCalendar\PhHolidayCalendarServiceProvider;
+use PhHolidayCalendar\Data\Activity;
+use PhHolidayCalendar\Data\Holiday;
+use PhHolidayCalendar\Scrapers\FallbackHolidayProvider;
 use Orchestra\Testbench\TestCase;
 
-class CalendarActivitiesTest extends TestCase
+class PhHolidayCalendarTest extends TestCase
 {
     protected function getPackageProviders($app): array
     {
-        return [CalendarActivitiesServiceProvider::class];
+        return [PhHolidayCalendarServiceProvider::class];
     }
 
-    private function makeService(): CalendarActivities
+    private function makeService(): PhHolidayCalendar
     {
         // Use fallback only so tests don't hit the internet or DB
-        return new CalendarActivities(
+        return new PhHolidayCalendar(
             holidays: new FallbackHolidayProvider(),
         );
     }

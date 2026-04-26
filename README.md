@@ -1,6 +1,6 @@
-# 🇵🇭 innonazarene/calendar-activities
+# 🇵🇭 innonazarene/ph-holiday-calendar
 
-A Laravel package that returns **Philippine public holidays** (from the Official Gazette) **and Activities** (from your database) in a single API response
+A Laravel package that returns **Philippine public holidays** (from the Official Gazette) in a single API response.
 
 ---
 
@@ -30,15 +30,15 @@ A Laravel package that returns **Philippine public holidays** (from the Official
 ## Installation
 
 ```bash
-composer require innonazarene/calendar-activities
+composer require innonazarene/ph-holiday-calendar
 ```
 
-Auto-discovery registers the service provider and `CalendarActivities` facade.
+Auto-discovery registers the service provider and `PhHolidayCalendar` facade.
 
 ### Publish config
 
 ```bash
-php artisan vendor:publish --tag=calendar-activities-config
+php artisan vendor:publish --tag=ph-holiday-calendar-config
 ```
 
 
@@ -50,7 +50,7 @@ php artisan vendor:publish --tag=calendar-activities-config
 ### Facade
 
 ```php
-use CalendarActivities\Facades\CalendarActivities;
+use PhHolidayCalendar\Facades\PhHolidayCalendar;
 
 // 1. Manually query your own database, format it however you want
 $myActivities = [
@@ -63,31 +63,31 @@ $myActivities = [
 ];
 
 // 2. Combined holidays + your manual activities for a month
-$data = CalendarActivities::forMonth(year: 2026, month: 5, activitiesList: $myActivities);
+$data = PhHolidayCalendar::forMonth(year: 2026, month: 5, activitiesList: $myActivities);
 // [
 //   'ph_holidays'     => [ ... ],
 //   'activities_list' => [ ... ]
 // ]
 
 // Combined for a full year
-$data = CalendarActivities::forYear(year: 2026, activitiesList: $myActivities);
+$data = PhHolidayCalendar::forYear(year: 2026, activitiesList: $myActivities);
 
 // Holidays only
-$holidays = CalendarActivities::holidays(2026);
+$holidays = PhHolidayCalendar::holidays(2026);
 
 // Check a specific date
-CalendarActivities::isHoliday('2026-12-25');      // true
-CalendarActivities::holidayOn('2026-12-25');       // Holiday DTO or null
+PhHolidayCalendar::isHoliday('2026-12-25');      // true
+PhHolidayCalendar::holidayOn('2026-12-25');       // Holiday DTO or null
 ```
 
 ### Dependency injection
 
 ```php
-use CalendarActivities\CalendarActivities;
+use PhHolidayCalendar\PhHolidayCalendar;
 
 class MyService
 {
-    public function __construct(private CalendarActivities $calendar) {}
+    public function __construct(private PhHolidayCalendar $calendar) {}
 
     public function getCalendar(): array
     {
