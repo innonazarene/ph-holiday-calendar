@@ -3,8 +3,6 @@
 namespace CalendarActivities;
 
 use Illuminate\Support\ServiceProvider;
-use CalendarActivities\Contracts\ActivityRepository;
-use CalendarActivities\Models\DatabaseActivityRepository;
 
 class CalendarActivitiesServiceProvider extends ServiceProvider
 {
@@ -12,13 +10,9 @@ class CalendarActivitiesServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/calendar-activities.php', 'calendar-activities');
 
-        // Bind the activity repository — override in AppServiceProvider to swap your own
-        $this->app->bind(ActivityRepository::class, DatabaseActivityRepository::class);
-
         $this->app->singleton(CalendarActivities::class, function ($app) {
             return new CalendarActivities(
-                activities: $app->make(ActivityRepository::class),
-                config:     config('calendar-activities', []),
+                config: config('calendar-activities', []),
             );
         });
 

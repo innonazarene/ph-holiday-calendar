@@ -1,6 +1,6 @@
 # 🇵🇭 innonazarene/calendar-activities
 
-A Laravel package that returns **Philippine public holidays** (from the Official Gazette) **and HR activities** (from your database) in a single API response — ready to plug into your `CalendarProvider.tsx`.
+A Laravel package that returns **Philippine public holidays** (from the Official Gazette) **and Activities** (from your database) in a single API response
 
 ---
 
@@ -23,7 +23,7 @@ A Laravel package that returns **Philippine public holidays** (from the Official
 }
 ```
 
-> `activities_list` is **empty `[]` by default** — it will populate once your existing table has rows. No migration needed.
+> `activities_list` is **an array provided manually by the developer**. You handle your own database queries and inject the results here!
 
 ---
 
@@ -41,26 +41,7 @@ Auto-discovery registers the service provider and `CalendarActivities` facade.
 php artisan vendor:publish --tag=calendar-activities-config
 ```
 
-> No migration needed — the package reads your existing table as-is.
 
----
-
-## Configuration (`config/calendar-activities.php`)
-
-```php
-'activities' => [
-    'table'       => env('CALENDAR_ACTIVITIES_TABLE', 'activities'), // your table name
-    'date_column' => env('CALENDAR_ACTIVITIES_DATE_COL', 'date'),    // column to filter by
-    'connection'  => env('CALENDAR_ACTIVITIES_CONNECTION', null),     // null = default DB
-],
-```
-
-Or via `.env`:
-
-```env
-CALENDAR_ACTIVITIES_TABLE=hr_activities
-CALENDAR_ACTIVITIES_DATE_COL=activity_date
-```
 
 ---
 
@@ -71,21 +52,28 @@ CALENDAR_ACTIVITIES_DATE_COL=activity_date
 ```php
 use CalendarActivities\Facades\CalendarActivities;
 
-// Combined holidays + activities for a month
-$data = CalendarActivities::forMonth(year: 2026, month: 4);
+// 1. Manually query your own database, format it however you want
+$myActivities = [
+    [
+        'id' => 1,
+        'title' => 'Personal Vacation',
+        'date' => '2026-05-10',
+        'type' => 'personal'
+    ]
+];
+
+// 2. Combined holidays + your manual activities for a month
+$data = CalendarActivities::forMonth(year: 2026, month: 5, activitiesList: $myActivities);
 // [
 //   'ph_holidays'     => [ ... ],
-//   'activities_list' => []       ← empty until your table has rows
+//   'activities_list' => [ ... ]
 // ]
 
 // Combined for a full year
-$data = CalendarActivities::forYear(2026);
+$data = CalendarActivities::forYear(year: 2026, activitiesList: $myActivities);
 
 // Holidays only
 $holidays = CalendarActivities::holidays(2026);
-
-// Activities only (from your DB)
-$activities = CalendarActivities::activities(year: 2026, month: 4);
 
 // Check a specific date
 CalendarActivities::isHoliday('2026-12-25');      // true
@@ -103,7 +91,9 @@ class MyService
 
     public function getCalendar(): array
     {
-        return $this->calendar->forMonth(2026, 4);
+        // Inject your custom activities here!
+        $myActivities = [];
+        return $this->calendar->forMonth(2026, 4, $myActivities);
     }
 }
 ```
@@ -120,7 +110,6 @@ use App\Http\Controllers\Api\CalendarController;
 Route::prefix('calendar')->group(function () {
     Route::get('/',           [CalendarController::class, 'index']);      // holidays + activities
     Route::get('/holidays',   [CalendarController::class, 'holidays']);   // holidays only
-    Route::get('/activities', [CalendarController::class, 'activities']); // activities only
     Route::get('/check',      [CalendarController::class, 'check']);      // is date a holiday?
 });
 ```
@@ -130,27 +119,7 @@ See [`examples/CalendarController.php`](examples/CalendarController.php) for the
 ---
 
 
-## Customising the Activity query
 
-By default, the package does `SELECT * FROM your_table WHERE YEAR(date) = ?`.
-
-To add joins, scopes, or filters, bind your own repository in `AppServiceProvider`:
-
-```php
-use CalendarActivities\Contracts\ActivityRepository;
-use App\Repositories\HrActivityRepository;
-
-public function register(): void
-{
-    $this->app->bind(ActivityRepository::class, HrActivityRepository::class);
-}
-```
-
-Your repository just needs to implement:
-
-```php
-public function get(int $year, int $month = 0): Collection; // Collection<Activity>
-```
 
 ---
 
@@ -166,4 +135,4 @@ public function get(int $year, int $month = 0): Collection; // Collection<Activi
 
 ## License
 
-MIT — [Tom Ramos Pedales](https://rustompedales-portfolio.vercel.app)
+MIT

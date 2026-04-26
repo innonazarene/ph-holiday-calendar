@@ -4,11 +4,9 @@ namespace CalendarActivities;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use CalendarActivities\Contracts\ActivityRepository;
 use CalendarActivities\Contracts\HolidayProvider;
-use CalendarActivities\Data\Activity;
 use CalendarActivities\Data\Holiday;
-use CalendarActivities\Models\DatabaseActivityRepository;
+
 use CalendarActivities\Scrapers\FallbackHolidayProvider;
 use CalendarActivities\Scrapers\OfficialGazetteScraper;
 
@@ -17,7 +15,7 @@ use CalendarActivities\Scrapers\OfficialGazetteScraper;
  *
  * Combines:
  *   1. ph_holidays     → scraped from Official Gazette, with fallback
- *   2. activities_list → from your existing DB table (blank/empty until data exists)
+ *   2. activities_list → manually provided array of your custom activities
  *
  * Response shape:
  *
@@ -31,18 +29,15 @@ use CalendarActivities\Scrapers\OfficialGazetteScraper;
  */
 class CalendarActivities
 {
-    private HolidayProvider    $holidays;
-    private ActivityRepository $activities;
-    private array              $config;
+    private HolidayProvider $holidays;
+    private array           $config;
 
     public function __construct(
-        ?HolidayProvider    $holidays   = null,
-        ?ActivityRepository $activities = null,
-        array               $config     = [],
+        ?HolidayProvider $holidays = null,
+        array            $config   = [],
     ) {
-        $this->config     = array_merge(config('calendar-activities', []), $config);
-        $this->holidays   = $holidays   ?? $this->makeHolidayProvider();
-        $this->activities = $activities ?? new DatabaseActivityRepository();
+        $this->config   = array_merge(config('calendar-activities', []), $config);
+        $this->holidays = $holidays ?? $this->makeHolidayProvider();
     }
 
     // ── Holidays ───────────────────────────────────────────────────────────
@@ -79,16 +74,7 @@ class CalendarActivities
         return $this->holidays($year)->first(fn (Holiday $h) => $h->date === $iso);
     }
 
-    // ── Activities ─────────────────────────────────────────────────────────
 
-    /**
-     * @return Collection<int, Activity>
-     */
-    public function activities(int $year = 0, int $month = 0): Collection
-    {
-        $year = $year ?: (int) now()->year;
-        return $this->activities->get($year, $month);
-    }
 
     // ── Combined (what your API endpoint returns) ──────────────────────────
 
@@ -100,7 +86,7 @@ class CalendarActivities
      *   'activities' => [...],
      * ]
      */
-    public function forMonth(int $year = 0, int $month = 0): array
+    public function forMonth(int $year = 0, int $month = 0, array $activitiesList = []): array
     {
         $year  = $year  ?: (int) now()->year;
         $month = $month ?: (int) now()->month;
@@ -111,17 +97,14 @@ class CalendarActivities
                                       ->map(fn (Holiday $h) => $h->toArray())
                                       ->values()
                                       ->all(),
-            'activities_list' => $this->activities($year, $month)
-                                      ->map(fn (Activity $a) => $a->toArray())
-                                      ->values()
-                                      ->all(),
+            'activities_list' => $activitiesList,
         ];
     }
 
     /**
      * Full year — all holidays + all activities.
      */
-    public function forYear(int $year = 0): array
+    public function forYear(int $year = 0, array $activitiesList = []): array
     {
         $year = $year ?: (int) now()->year;
 
@@ -130,10 +113,7 @@ class CalendarActivities
                                       ->map(fn (Holiday $h) => $h->toArray())
                                       ->values()
                                       ->all(),
-            'activities_list' => $this->activities($year)
-                                      ->map(fn (Activity $a) => $a->toArray())
-                                      ->values()
-                                      ->all(),
+            'activities_list' => $activitiesList,
         ];
     }
 
