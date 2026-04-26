@@ -129,26 +129,6 @@ See [`examples/CalendarController.php`](examples/CalendarController.php) for the
 
 ---
 
-## Update your CalendarProvider.tsx
-
-Change **two lines**:
-
-```diff
-- const url =
--   config.holidaysEndpoint ??
--   `https://date.nager.at/api/v3/PublicHolidays/${year}/${config.countryCode}`;
-+ const url =
-+   config.holidaysEndpoint ??
-+   `/api/calendar/holidays/${year}`;
-```
-
-```diff
-- const url = `${config.activitiesEndpoint}?year=${year}&month=${month}`;
-+ const url = `/api/calendar?year=${year}&month=${month}`;
-// or keep separate: /api/calendar/activities?year=...&month=...
-```
-
----
 
 ## Customising the Activity query
 
