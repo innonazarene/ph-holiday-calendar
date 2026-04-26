@@ -1,4 +1,4 @@
-# 🇵🇭 innonazarene/ph-holiday-calendar
+# 🇵🇭 Philippine Holiday Calendar
 
 A Laravel package that returns **Philippine public holidays** (from the Official Gazette) in a single API response.
 
