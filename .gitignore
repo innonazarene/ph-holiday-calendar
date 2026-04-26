@@ -1,0 +1,26 @@
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel
+.env
+.env.backup
+.env.production
+*.sqlite
+*.sqlite3
+*.db
+homestead.yaml
+homestead.json
+/.vagrant
+.phpunit.result.cache
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db

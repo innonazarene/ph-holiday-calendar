@@ -1,0 +1,49 @@
+{
+    "name": "innonazarene/calendar-activities",
+    "description": "Laravel package that returns Philippine public holidays (Official Gazette) and HR activities from your database — ready for your CalendarProvider.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["philippines", "holidays", "activities", "calendar", "official-gazette", "laravel", "hr"],
+    "authors": [
+        {
+            "name": "Tom Ramos Pedales",
+            "email": "dev@innonazarene.dev",
+            "homepage": "https://rustompedales-portfolio.vercel.app"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "symfony/dom-crawler": "^6.0|^7.0",
+        "symfony/css-selector": "^6.0|^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0|^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CalendarActivities\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CalendarActivities\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CalendarActivities\\CalendarActivitiesServiceProvider"
+            ],
+            "aliases": {
+                "CalendarActivities": "CalendarActivities\\Facades\\CalendarActivities"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
