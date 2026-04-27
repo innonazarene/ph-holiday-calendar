@@ -1,4 +1,5 @@
 # 🇵🇭 Philippine Holiday Calendar
+[![Latest Version](https://img.shields.io/packagist/v/innonazarene/ph-holiday-calendar.svg)](https://packagist.org/packages/innonazarene/ph-holiday-calendar)
 
 A Laravel package that returns **Philippine public holidays** (from the Official Gazette) in a single API response.
 
